@@ -1,4 +1,11 @@
+using MarineMexico.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Register DbContext
+builder.Services.AddDbContext<SsamarineContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DatabaseConnection")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

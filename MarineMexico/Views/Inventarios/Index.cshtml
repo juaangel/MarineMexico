@@ -1,0 +1,44 @@
+﻿@model IEnumerable<MarineMexico.Models.Inventario>
+
+@{
+    ViewData["Title"] = "Inventario";
+}
+
+<h1 class="title has-text-weight-normal">@ViewData["Title"]</h1>
+
+<a class="button mb-3" asp-action="Create">Añadir artículo</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Artículo</th>
+            <th>Talla</th>
+            <th>Stock Actual</th>
+            <th>Stock Mínimo</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Articulo.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Talla.Talla1) (@Html.DisplayFor(modelItem => item.Talla.Notacion))
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StockActual)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StockMinimo)
+                </td>
+                
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

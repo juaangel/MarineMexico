@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MarineMexico;
+namespace MarineMexico.Models;
 
 public partial class Empleado
 {
