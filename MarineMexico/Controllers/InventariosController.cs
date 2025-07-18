@@ -44,7 +44,7 @@ namespace MarineMexico.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_context.Inventarios.Any(i => i.ArticuloId == inventario.ArticuloId && i.TallaId == inventario.TallaId))
+                if (await _context.Inventarios.AnyAsync(i => i.ArticuloId == inventario.ArticuloId && i.TallaId == inventario.TallaId))
                 {
                     ModelState.AddModelError("", "Ya existe un inventario para este artículo y talla.");
                     ViewData["ArticuloId"] = new SelectList(_context.Articulos, "Id", "Nombre", inventario.ArticuloId);

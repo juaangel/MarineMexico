@@ -65,10 +65,29 @@ namespace MarineMexico.Controllers
         // GET: MovimientosInventarios/Create
         public IActionResult Create()
         {
-            ViewData["EmpleadoId"] = new SelectList(_context.Empleados, "IdEmpleado", "IdEmpleado");
-            ViewData["InventarioId"] = new SelectList(_context.Inventarios, "Id", "Id");
-            ViewData["TipoMovimientoId"] = new SelectList(_context.TiposMovimientoInventarios, "Id", "Id");
-            return View();
+            var inventario = _context.Inventarios
+                .Include(x => x.Articulo)
+                .Include(x => x.Articulo.TipoEmpleado)
+                .Include(x => x.Talla)
+                .Select(x => new
+                {
+                    x.Id,
+                    Descripcion = $"{x.Articulo.Nombre} | {x.Talla.Talla1} ({x.Talla.Notacion}) | {(x.Articulo.TipoEmpleadoId.HasValue ? x.Articulo.TipoEmpleado.Tipo : "Sin Tipo")}",
+                    x.Articulo.TipoEmpleadoId,
+                    Tipo = x.Articulo.TipoEmpleado != null ? x.Articulo.TipoEmpleado.Tipo : "Sin Tipo"
+                })
+                .ToList();
+
+            ViewData["Empleado"] = _context.Empleados
+                //.Include(x => x.gr)
+                .OrderBy(x => x.NombreEmpleado).ToList();
+            ViewData["Inventario"] = inventario;
+            ViewData["TipoMovimientoId"] = new SelectList(_context.TiposMovimientoInventarios, "Id", "Descripcion");
+            ViewData["MotivoMovimiento"] = _context.MotivosMovimientoInventarios.ToList();
+
+            var model = new MovimientosInventario();
+
+            return View(model);
         }
 
         // POST: MovimientosInventarios/Create

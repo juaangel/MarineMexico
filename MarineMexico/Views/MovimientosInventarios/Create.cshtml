@@ -15,7 +15,13 @@
                 <label class="label">Inventario</label>
                 <div class="control">
                     <div class="select">
-                        <select asp-for="InventarioId" asp-items="ViewBag.InventarioId"></select>
+                        <select asp-for="InventarioId">
+                            <option>Artículo | Talla | Tipo Empleado</option>
+                            @foreach (var item in ViewBag.Inventario)
+                            {
+                                <option value="@item.Id" data-tipo-empleado-id="@item.TipoEmpleadoId">@item.Descripcion</option>
+                            }
+                        </select>
                     </div>
                 </div>
             </div>
@@ -29,20 +35,30 @@
                 </div>
             </div>
 
+			<div class="field">
+				<label class="label">Motivo</label>
+				<div class="control">
+                    <div class="select" style="font-family: 'Courier New', monospace;">
+						<select asp-for="MotivoMovimientoId">
+                            @foreach (var item in (List<MarineMexico.Models.MotivosMovimientoInventario>)ViewBag.MotivoMovimiento)
+							{
+                                <option value="@item.Id" data-tipo-movimiento-id="@item.TipoMovimientoInventarioId">@item.Descripcion</option>
+							}
+						</select>
+					</div>
+				</div>
+			</div>
+
             <div class="field">
                 <label class="label">Empleado</label>
                 <div class="control">
                     <div class="select">
-                        <select asp-for="EmpleadoId" asp-items="ViewBag.EmpleadoId"></select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="field">
-                <label class="label">Motivo</label>
-                <div class="control">
-                    <div class="select">
-                        <select asp-for="MotivoMovimientoId" asp-items="ViewBag.MotivoMovimientoId"></select>
+                        <select asp-for="EmpleadoId">
+                            @foreach (var item in (List<MarineMexico.Models.Empleado>)ViewBag.Empleado)
+                            {
+                                @* <option value="@item.IdEmpleado" data-tipo-empleado-id="@item.grupo">@item.Descripcion</option> *@
+                            }
+                        </select>
                     </div>
                 </div>
             </div>
@@ -55,8 +71,8 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="buttons mt-3">
+                <input type="submit" value="Crear" class="button" />
             </div>
         </form>
     </div>
