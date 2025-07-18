@@ -1,44 +1,60 @@
 ﻿@model MarineMexico.Models.MovimientosInventario
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Crear movimiento de inventario";
 }
 
-<h1>Create</h1>
+<h1 class="subtitle has-text-weight-normal">@ViewData["Title"]</h1>
 
-<h4>MovimientosInventario</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="columns">
+    <div class="column is-full-mobile is-half-tablet is-one-third-desktop">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="TipoMovimientoId" class="control-label"></label>
-                <select asp-for="TipoMovimientoId" class ="form-control" asp-items="ViewBag.TipoMovimientoId"></select>
+
+            <div class="field">
+                <label class="label">Inventario</label>
+                <div class="control">
+                    <div class="select">
+                        <select asp-for="InventarioId" asp-items="ViewBag.InventarioId"></select>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="MotivoMovimientoId" class="control-label"></label>
-                <input asp-for="MotivoMovimientoId" class="form-control" />
-                <span asp-validation-for="MotivoMovimientoId" class="text-danger"></span>
+
+            <div class="field">
+                <label class="label">Tipo Movimiento</label>
+                <div class="control">
+                    <div class="select">
+                        <select asp-for="TipoMovimientoId" asp-items="ViewBag.TipoMovimientoId"></select>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Cantidad" class="control-label"></label>
-                <input asp-for="Cantidad" class="form-control" />
-                <span asp-validation-for="Cantidad" class="text-danger"></span>
+
+            <div class="field">
+                <label class="label">Empleado</label>
+                <div class="control">
+                    <div class="select">
+                        <select asp-for="EmpleadoId" asp-items="ViewBag.EmpleadoId"></select>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="StockActualAntes" class="control-label"></label>
-                <input asp-for="StockActualAntes" class="form-control" />
-                <span asp-validation-for="StockActualAntes" class="text-danger"></span>
+
+            <div class="field">
+                <label class="label">Motivo</label>
+                <div class="control">
+                    <div class="select">
+                        <select asp-for="MotivoMovimientoId" asp-items="ViewBag.MotivoMovimientoId"></select>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="InventarioId" class="control-label"></label>
-                <select asp-for="InventarioId" class ="form-control" asp-items="ViewBag.InventarioId"></select>
+
+            <div class="field">
+                <label asp-for="Cantidad" class="label"></label>
+                <div class="control">
+                    <input asp-for="Cantidad" class="input" />
+                    <span asp-validation-for="Cantidad" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="EmpleadoId" class="control-label"></label>
-                <select asp-for="EmpleadoId" class ="form-control" asp-items="ViewBag.EmpleadoId"></select>
-            </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
