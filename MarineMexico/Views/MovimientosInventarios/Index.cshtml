@@ -1,0 +1,79 @@
+﻿@model IEnumerable<MarineMexico.Models.MovimientosInventarioView>
+
+@{
+    ViewData["Title"] = "Movimientos de inventario";
+}
+
+<h1 class="title has-text-weight-normal">@ViewData["Title"]</h1>
+@if (ViewBag.Inventario != null)
+{
+    <h2 class="subtitle">@ViewBag.Inventario</h2>
+}
+
+<div class="buttons mb-3">
+    <a class="button" asp-action="Create" asp-controller="MovimientosInventarios">
+        <span class="icon">
+            <i class="fa-solid fa-plus"></i>
+        </span>
+        Agregar
+    </a>
+    <a class="button" asp-action="Index" asp-controller="MovimientosInventarios">
+        <span class="icon mr-1">
+            <i class="fa-solid fa-arrow-down"></i>
+        </span>
+        Entrada
+    </a>
+    <a class="button" asp-action="Index" asp-controller="MovimientosInventarios">
+        <span class="icon mr-1">
+            <i class="fa-solid fa-arrow-up"></i>
+        </span>
+        Salida
+    </a>
+    @* <a class="button mb-3" asp-action="Create">Añadir artículo</a> *@
+
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Movimiento</th>
+            <th>Artículo</th>
+            <th>Talla</th>
+            <th>Cantidad</th>
+            <th>Motivo</th>
+            <th>Empleado</th>
+            <th>Fecha</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Movimiento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Articulo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Talla)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cantidad)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Motivo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreEmpleado)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaMovimiento)
+            </td>
+            <td>
+                <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

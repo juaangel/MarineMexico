@@ -1,44 +1,48 @@
-﻿@model MarineMexico.Models.Inventario
+﻿@model MarineMexico.Models.ViewModels.InventarioViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Añadir artículo al inventario";
 }
 
-<h1>Create</h1>
+<h1 class="subtitle has-text-weight-normal">@ViewData["Title"]</h1>
 
-<h4>Inventario</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="columns">
+    <div class="column is-full-mobile is-half-tablet is-one-third-desktop">
+
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ArticuloId" class="control-label"></label>
-                <select asp-for="ArticuloId" class ="form-control" asp-items="ViewBag.ArticuloId"></select>
+            <div asp-validation-summary="ModelOnly" class="has-text-danger"></div>
+            <div class="field">
+                <label class="label">Artículo</label>
+                <div class="control">
+                    <div class="select">
+                        <select asp-for="ArticuloId" asp-items="ViewBag.ArticuloId"></select>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="TallaId" class="control-label"></label>
-                <select asp-for="TallaId" class ="form-control" asp-items="ViewBag.TallaId"></select>
+            <div class="field">
+                <label class="label">Talla</label>
+                <div class="control">
+                    <div class="select">
+                        <select asp-for="TallaId" asp-items="ViewBag.TallaId"></select>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="StockActual" class="control-label"></label>
-                <input asp-for="StockActual" class="form-control" />
-                <span asp-validation-for="StockActual" class="text-danger"></span>
+            <div class="field">
+                <label asp-for="StockMinimo" class="label">Stock mínimo</label>
+                <div class="control">
+                    <input asp-for="StockMinimo" class="input" />
+                    <span asp-validation-for="StockMinimo" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="StockMinimo" class="control-label"></label>
-                <input asp-for="StockMinimo" class="form-control" />
-                <span asp-validation-for="StockMinimo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="field mt-5">
+                <input type="submit" value="Añadir" class="button" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Regresar al inventario</a>
 </div>
 
 @section Scripts {

@@ -12,4 +12,5 @@ public partial class MotivosMovimientoInventario
     public int TipoMovimientoInventarioId { get; set; }
 
     public virtual TiposMovimientoInventario TipoMovimientoInventario { get; set; } = null!;
+    public virtual ICollection<MovimientosInventario> MovimientosInventarios { get; set; } = new List<MovimientosInventario>();
 }

@@ -26,4 +26,5 @@ public partial class MovimientosInventario
     public virtual Inventario Inventario { get; set; } = null!;
 
     public virtual TiposMovimientoInventario TipoMovimiento { get; set; } = null!;
+    public virtual MotivosMovimientoInventario MotivosMovimiento { get; set; } = null!;
 }

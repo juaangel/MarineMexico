@@ -34,6 +34,8 @@ public partial class SsamarineContext : DbContext
 
     public virtual DbSet<TiposMovimientoInventario> TiposMovimientoInventarios { get; set; }
 
+    public virtual DbSet<MovimientosInventarioView> MovimientosInventarioViews { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
@@ -96,7 +98,7 @@ public partial class SsamarineContext : DbContext
         modelBuilder.Entity<Inventario>(entity =>
         {
             entity.ToTable("Inventario");
-
+            
             entity.HasOne(d => d.Articulo).WithMany(p => p.Inventarios)
                 .HasForeignKey(d => d.ArticuloId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -141,6 +143,11 @@ public partial class SsamarineContext : DbContext
                 .HasForeignKey(d => d.TipoMovimientoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_MovimientosInventario_TiposMovimientoInventario");
+
+            entity.HasOne(d => d.MotivosMovimiento).WithMany(p => p.MovimientosInventarios)
+                .HasForeignKey(d => d.MotivoMovimientoId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MovimientosInventario_MotivosMovimientoInventario");
         });
 
         modelBuilder.Entity<Talla>(entity =>
@@ -168,6 +175,21 @@ public partial class SsamarineContext : DbContext
             entity.ToTable("TiposMovimientoInventario");
 
             entity.Property(e => e.Descripcion).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<MovimientosInventarioView>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("MovimientosInventarioView");
+
+            entity.Property(e => e.Articulo).HasMaxLength(100);
+            entity.Property(e => e.Motivo).HasMaxLength(50);
+            entity.Property(e => e.Movimiento).HasMaxLength(50);
+            entity.Property(e => e.NombreEmpleado)
+                .HasMaxLength(100)
+                .HasColumnName("Nombre_Empleado");
+            entity.Property(e => e.Talla).HasMaxLength(23);
         });
 
         OnModelCreatingPartial(modelBuilder);

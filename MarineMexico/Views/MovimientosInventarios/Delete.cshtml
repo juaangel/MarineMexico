@@ -1,0 +1,54 @@
+﻿@model MarineMexico.Models.MovimientosInventarioView
+
+@{
+    ViewData["Title"] = "Eliminar movimiento de inventario";
+}
+
+<h1 class="title has-text-weight-normal">@ViewData["Title"]</h1>
+
+<h3>¿Estás seguro de que deseas eliminar esto?</h3>
+<div>
+    <h4 class="subtitle">Movimiento de @Model.Movimiento del @Model.FechaMovimiento</h4>
+    <hr />
+
+    <div class="field">
+        <label class="label">Movimiento</label>
+        <p>@Model.Movimiento</p>
+    </div>
+    <div class="field">
+        <label class="label">Artículo</label>
+        <p>@Model.Articulo</p>
+    </div>
+    <div class="field">
+        <label class="label">Talla</label>
+        <p>@Model.Talla</p>
+    </div>
+    <div class="field">
+        <label class="label">Cantidad</label>
+        <p>@Model.Cantidad</p>
+    </div>
+    <div class="field">
+        <label class="label">Motivo</label>
+        <p>@Model.Motivo</p>
+    </div>
+    @if (Model.NombreEmpleado is not null)
+    {
+        <div class="field">
+            <label class="label">Empleado</label>
+            <p>@Model.NombreEmpleado</p>
+        </div>
+    }
+    <div class="field">
+        <label class="label">Fecha</label>
+        <p>@Model.FechaMovimiento</p>
+    </div>
+
+    <div class="buttons mt-5">
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Eliminar" class="button is-danger mr-3" />
+            <a asp-action="Index" class="button is-light">Volver a la lista</a>
+        </form>
+    </div>
+    
+</div>
