@@ -12,4 +12,5 @@ public partial class Grupo
     public int IdTipo { get; set; }
 
     public virtual TiposEmpleado IdTipoNavigation { get; set; } = null!;
+    public virtual ICollection<Empleado> Empleados { get; set; } = new List<Empleado>();
 }

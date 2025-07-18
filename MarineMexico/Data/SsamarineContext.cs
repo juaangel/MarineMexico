@@ -74,6 +74,11 @@ public partial class SsamarineContext : DbContext
             entity.Property(e => e.NombreEmpleado)
                 .HasMaxLength(100)
                 .HasColumnName("Nombre_Empleado");
+
+            entity.HasOne(d => d.IdGrupoNavigation).WithMany(p => p.Empleados)
+                .HasForeignKey(d => d.IdGrupo)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Empleado_Grupos");
         });
 
         modelBuilder.Entity<Grupo>(entity =>

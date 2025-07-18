@@ -40,6 +40,7 @@
 				<div class="control">
                     <div class="select" style="font-family: 'Courier New', monospace;">
 						<select asp-for="MotivoMovimientoId">
+                            <option value="">-- Selecciona una opción --</option>
                             @foreach (var item in (List<MarineMexico.Models.MotivosMovimientoInventario>)ViewBag.MotivoMovimiento)
 							{
                                 <option value="@item.Id" data-tipo-movimiento-id="@item.TipoMovimientoInventarioId">@item.Descripcion</option>
@@ -54,9 +55,10 @@
                 <div class="control">
                     <div class="select">
                         <select asp-for="EmpleadoId">
-                            @foreach (var item in (List<MarineMexico.Models.Empleado>)ViewBag.Empleado)
+                            <option value="">-- Selecciona una opción --</option>
+                            @foreach (var item in ViewBag.Empleado)
                             {
-                                @* <option value="@item.IdEmpleado" data-tipo-empleado-id="@item.grupo">@item.Descripcion</option> *@
+                                <option value="@item.IdEmpleado" data-tipo-empleado-id="@item.IdTipo">@item.NombreEmpleado</option>
                             }
                         </select>
                     </div>
@@ -79,9 +81,40 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Regresar a la lista</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            const selectEmpleado = $('select#EmpleadoId');
+            const selectMotivo = $('select#MotivoMovimientoId');
+
+            $('select#InventarioId').on('change', function () {
+                const tipoEmpleadoId = $(this).find('option:selected').data('tipo-empleado-id');
+
+                selectEmpleado.find('option').hide();
+                selectEmpleado.find('option').filter(function () {
+					return tipoEmpleadoId == undefined
+					|| $(this).data('tipo-empleado-id') === tipoEmpleadoId;
+				}).show();
+
+                selectEmpleado.val('');
+            });
+
+            $('select#TipoMovimientoId').on('change', function () {
+                const tipoMovimientoId = $(this).val();
+
+                selectMotivo.find('option').hide();
+                selectMotivo.find('option').filter(function () {
+                    return $(this).data('tipo-movimiento-id') == tipoMovimientoId;
+                }).show();
+
+                selectMotivo.val('');
+            });
+
+            $('select#TipoMovimientoId').trigger('change');
+        });
+    </script>
 }

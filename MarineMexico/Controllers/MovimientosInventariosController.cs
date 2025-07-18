@@ -79,8 +79,17 @@ namespace MarineMexico.Controllers
                 .ToList();
 
             ViewData["Empleado"] = _context.Empleados
-                //.Include(x => x.gr)
-                .OrderBy(x => x.NombreEmpleado).ToList();
+                .Include(x => x.IdGrupoNavigation.IdTipoNavigation)
+                .OrderBy(x => x.NombreEmpleado)
+                .AsEnumerable()
+                .Select(x => new
+                {
+                    x.IdEmpleado,
+                    NombreEmpleado = $"{x.NombreEmpleado} ({x.IdGrupoNavigation.IdTipoNavigation.Tipo})",
+                    x.IdGrupoNavigation.IdTipo
+                })
+                .ToList();
+
             ViewData["Inventario"] = inventario;
             ViewData["TipoMovimientoId"] = new SelectList(_context.TiposMovimientoInventarios, "Id", "Descripcion");
             ViewData["MotivoMovimiento"] = _context.MotivosMovimientoInventarios.ToList();

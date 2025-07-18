@@ -12,4 +12,6 @@ public partial class Empleado
     public string IdGrupo { get; set; } = null!;
 
     public virtual ICollection<MovimientosInventario> MovimientosInventarios { get; set; } = new List<MovimientosInventario>();
+    public virtual Grupo IdGrupoNavigation { get; set; } = null!;
+
 }
