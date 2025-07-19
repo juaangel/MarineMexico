@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MarineMexico.Models;
+namespace MarineMexico.Models.Views;
 
 public partial class MovimientosInventarioView
 {
@@ -15,6 +15,7 @@ public partial class MovimientosInventarioView
     public int Cantidad { get; set; }
 
     public string Motivo { get; set; } = null!;
+    public int? IdEmpleado { get; set; }
 
     public string? NombreEmpleado { get; set; }
     public int InventarioId { get; set; }

@@ -1,4 +1,4 @@
-﻿@model MarineMexico.Models.MovimientosInventario
+﻿@model MarineMexico.Models.ViewModels.MovimientosInventarioViewModel
 
 @{
     ViewData["Title"] = "Crear movimiento de inventario";
@@ -9,7 +9,7 @@
 <div class="columns">
     <div class="column is-full-mobile is-half-tablet is-one-third-desktop">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="has-text-danger"></div>
 
             <div class="field">
                 <label class="label">Inventario</label>

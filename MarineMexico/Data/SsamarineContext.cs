@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using MarineMexico.Models;
+using MarineMexico.Models.Views;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace MarineMexico.Data;
@@ -190,10 +192,12 @@ public partial class SsamarineContext : DbContext
 
             entity.Property(e => e.Articulo).HasMaxLength(100);
             entity.Property(e => e.Motivo).HasMaxLength(50);
+            entity.Property(e => e.IdEmpleado).HasColumnName("Id_Empleado").IsRequired(false);
             entity.Property(e => e.Movimiento).HasMaxLength(50);
             entity.Property(e => e.NombreEmpleado)
                 .HasMaxLength(100)
-                .HasColumnName("Nombre_Empleado");
+                .HasColumnName("Nombre_Empleado")
+                .IsRequired(false);
             entity.Property(e => e.Talla).HasMaxLength(23);
         });
 

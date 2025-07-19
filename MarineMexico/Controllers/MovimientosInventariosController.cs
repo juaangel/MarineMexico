@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MarineMexico.Data;
+using MarineMexico.Models;
+using MarineMexico.Models.ViewModels;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MarineMexico.Data;
-using MarineMexico.Models;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MarineMexico.Controllers
 {
@@ -65,19 +68,12 @@ namespace MarineMexico.Controllers
         // GET: MovimientosInventarios/Create
         public IActionResult Create()
         {
-            var inventario = _context.Inventarios
-                .Include(x => x.Articulo)
-                .Include(x => x.Articulo.TipoEmpleado)
-                .Include(x => x.Talla)
-                .Select(x => new
-                {
-                    x.Id,
-                    Descripcion = $"{x.Articulo.Nombre} | {x.Talla.Talla1} ({x.Talla.Notacion}) | {(x.Articulo.TipoEmpleadoId.HasValue ? x.Articulo.TipoEmpleado.Tipo : "Sin Tipo")}",
-                    x.Articulo.TipoEmpleadoId,
-                    Tipo = x.Articulo.TipoEmpleado != null ? x.Articulo.TipoEmpleado.Tipo : "Sin Tipo"
-                })
-                .ToList();
+            SetViewDataForCreate();
+            return View();
+        }
 
+        private void SetViewDataForCreate()
+        {
             ViewData["Empleado"] = _context.Empleados
                 .Include(x => x.IdGrupoNavigation.IdTipoNavigation)
                 .OrderBy(x => x.NombreEmpleado)
@@ -90,13 +86,21 @@ namespace MarineMexico.Controllers
                 })
                 .ToList();
 
-            ViewData["Inventario"] = inventario;
+            ViewData["Inventario"] = _context.Inventarios
+                .Include(x => x.Articulo)
+                .Include(x => x.Articulo.TipoEmpleado)
+                .Include(x => x.Talla)
+                .Select(x => new
+                {
+                    x.Id,
+                    Descripcion = $"{x.Articulo.Nombre} | {x.Talla.Talla1} ({x.Talla.Notacion}) | {(x.Articulo.TipoEmpleadoId.HasValue ? x.Articulo.TipoEmpleado.Tipo : "Sin Tipo")}",
+                    x.Articulo.TipoEmpleadoId,
+                    Tipo = x.Articulo.TipoEmpleado != null ? x.Articulo.TipoEmpleado.Tipo : "Sin Tipo"
+                })
+                .ToList();
+
             ViewData["TipoMovimientoId"] = new SelectList(_context.TiposMovimientoInventarios, "Id", "Descripcion");
             ViewData["MotivoMovimiento"] = _context.MotivosMovimientoInventarios.ToList();
-
-            var model = new MovimientosInventario();
-
-            return View(model);
         }
 
         // POST: MovimientosInventarios/Create
@@ -104,17 +108,46 @@ namespace MarineMexico.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,TipoMovimientoId,MotivoMovimientoId,Cantidad,StockActualAntes,InventarioId,FechaMovimiento,EmpleadoId")] MovimientosInventario movimientosInventario)
+        public async Task<IActionResult> Create([Bind("Id,TipoMovimientoId,MotivoMovimientoId,Cantidad,InventarioId,FechaMovimiento,EmpleadoId")] MovimientosInventarioViewModel movimientosInventario)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(movimientosInventario);
+                // El tipo de empleado correspondiente al empleado al que se le asigno el movimiento
+                int tipoEmpleadoId = await _context.Empleados
+                    .Where(e => e.IdEmpleado == movimientosInventario.EmpleadoId)
+                    .Select(e => e.IdGrupoNavigation.IdTipo)
+                    .FirstOrDefaultAsync();
+
+                // el articulo no corresponde al tipo de empleado
+                if (await _context.Inventarios
+                    .Where(i => i.Id == movimientosInventario.InventarioId)
+                    .Select(i => i.Articulo.TipoEmpleadoId)
+                    .AnyAsync(tipo =>
+                        tipoEmpleadoId != default
+                        && tipo != null
+                        && tipo != tipoEmpleadoId))
+                {
+                    ModelState.AddModelError("", "El artículo no corresponde al tipo de empleado");
+                    SetViewDataForCreate();
+                    return View(movimientosInventario);
+                }
+
+                var nuevoMovimientoInventario = new MovimientosInventario
+                {
+                    TipoMovimientoId = movimientosInventario.TipoMovimientoId,
+                    MotivoMovimientoId = movimientosInventario.MotivoMovimientoId,
+                    Cantidad = movimientosInventario.Cantidad,
+                    InventarioId = movimientosInventario.InventarioId,
+                    FechaMovimiento = movimientosInventario.FechaMovimiento,
+                    EmpleadoId = movimientosInventario.EmpleadoId
+                };
+
+                _context.Add(nuevoMovimientoInventario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmpleadoId"] = new SelectList(_context.Empleados, "IdEmpleado", "IdEmpleado", movimientosInventario.EmpleadoId);
-            ViewData["InventarioId"] = new SelectList(_context.Inventarios, "Id", "Id", movimientosInventario.InventarioId);
-            ViewData["TipoMovimientoId"] = new SelectList(_context.TiposMovimientoInventarios, "Id", "Id", movimientosInventario.TipoMovimientoId);
+
+            SetViewDataForCreate();
             return View(movimientosInventario);
         }
 
