@@ -142,6 +142,7 @@ namespace MarineMexico.Controllers
                     EmpleadoId = movimientosInventario.EmpleadoId
                 };
 
+                // Este INSERT activa el trigger [dbo].[tr_MovimientosInventario_After]
                 _context.Add(nuevoMovimientoInventario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -231,13 +232,11 @@ namespace MarineMexico.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var movimientosInventario = await _context.MovimientosInventarios.FindAsync(id);
-            if (movimientosInventario != null)
-            {
-                _context.MovimientosInventarios.Remove(movimientosInventario);
-            }
 
+            // Este DELETE activa el trigger [dbo].[tr_MovimientosInventario_After]
+            await _context.Database.ExecuteSqlRawAsync("DELETE FROM MovimientosInventario WHERE Id = @p0", id);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 

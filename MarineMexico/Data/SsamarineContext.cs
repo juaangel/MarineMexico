@@ -133,6 +133,8 @@ public partial class SsamarineContext : DbContext
         {
             entity.ToTable("MovimientosInventario");
 
+            entity.ToTable(tb => tb.HasTrigger("tr_MovimientosInventario_After"));
+
             entity.Property(e => e.FechaMovimiento)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");

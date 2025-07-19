@@ -148,14 +148,10 @@ namespace MarineMexico.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var inventario = await _context.Inventarios.FindAsync(id);
-            if (inventario != null)
-            {
-                // Este DELETE activa el trigger INSTEAD OF DELETE tr_Inventario_PreventDelete
-                await _context.Database.ExecuteSqlRawAsync("DELETE FROM Inventario WHERE Id = @p0", id);
-            }
-
+            // Este DELETE activa el trigger INSTEAD OF DELETE tr_Inventario_PreventDelete
+            await _context.Database.ExecuteSqlRawAsync("DELETE FROM Inventario WHERE Id = @p0", id);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
