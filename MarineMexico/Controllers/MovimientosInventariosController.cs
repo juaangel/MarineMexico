@@ -132,6 +132,26 @@ namespace MarineMexico.Controllers
                     return View(movimientosInventario);
                 }
 
+                if (movimientosInventario.TipoMovimientoId == TiposMovimientoInventario.SALIDA)
+                {
+                    var inv = await _context.Inventarios.FindAsync(movimientosInventario.InventarioId);
+                    int stockRestante = inv.StockActual - movimientosInventario.Cantidad;
+
+                    if (stockRestante < inv.StockMinimo)
+                    {
+                        ModelState.AddModelError("", $"El stock mínimo del artículo en el inventario es: {inv.StockMinimo}");
+                        SetViewDataForCreate();
+                        return View(movimientosInventario);
+                    }
+
+                    if (stockRestante < 0)
+                    {
+                        ModelState.AddModelError("", "No hay stock suficiente de este artículo en el inventario");
+                        SetViewDataForCreate();
+                        return View(movimientosInventario);
+                    }
+                }
+
                 var nuevoMovimientoInventario = new MovimientosInventario
                 {
                     TipoMovimientoId = movimientosInventario.TipoMovimientoId,

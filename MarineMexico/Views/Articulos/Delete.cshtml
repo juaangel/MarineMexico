@@ -1,0 +1,41 @@
+﻿@model MarineMexico.Models.Articulo  
+
+@{  
+    ViewData["Title"] = "Eliminar artículo";  
+}  
+
+<h1 class="title has-text-weight-normal">@ViewData["Title"]</h1>  
+
+<h3>¿Estás seguro de que deseas eliminar esto?</h3>  
+
+<div>  
+    <hr />  
+
+    <div class="field">  
+        <label class="label">Nombre</label>  
+        <p>@Html.DisplayFor(model => model.Nombre)</p>  
+    </div>  
+    <div class="field">  
+        <label class="label">Tipo Empleado</label>  
+        <p>  
+            @if (Model.TipoEmpleado != null)  
+            {  
+                @Html.DisplayFor(model => model.TipoEmpleado!.Tipo)  
+            }  
+            else  
+            {  
+                <span>No especificado</span>  
+            }  
+        </p>  
+    </div>
+
+    <div class="buttons mt-5">
+        <form asp-action="Delete">
+            <div asp-validation-summary="ModelOnly" class="has-text-danger mb-3"></div>
+
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Eliminar" class="button is-danger mr-3" />
+            <a asp-action="Index" class="button is-light">Volver a la lista</a>
+        </form>
+    </div>
+</div>

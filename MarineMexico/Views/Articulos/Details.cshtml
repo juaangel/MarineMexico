@@ -1,0 +1,32 @@
+﻿@model MarineMexico.Models.Articulo
+
+@{
+    ViewData["Title"] = "Artículo";
+}
+
+<h1 class="title has-text-weight-normal">@ViewData["Title"]</h1>
+
+<div>
+    <div class="field">
+        <label class="label">Nombre del artículo</label>
+        <p>@Html.DisplayFor(model => model.Nombre)</p>
+    </div>
+    <div class="field">
+        <label class="label">Tipo empleado</label>
+        <p>
+            @if (Model.TipoEmpleado != null)
+            {
+                @Html.DisplayFor(model => model.TipoEmpleado!.Tipo)
+            }
+            else
+            {
+                <span>No especificado</span>
+            }
+        </p>
+    </div>
+</div>
+
+<div class="mt-5">
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a> |
+    <a asp-action="Index">Volver a la lista</a>
+</div>

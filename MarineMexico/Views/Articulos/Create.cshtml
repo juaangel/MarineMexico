@@ -1,0 +1,44 @@
+﻿@model MarineMexico.Models.Articulo
+
+@{
+    ViewData["Title"] = "Añadir artículo";
+}
+
+<h1 class="subtitle has-text-weight-normal">@ViewData["Title"]</h1>
+
+<div class="columns">
+    <div class="column is-full-mobile is-half-tablet is-one-third-desktop">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="has-text-danger"></div>
+            <div class="field">
+                <div class="control">
+                    <label asp-for="Nombre" class="label"></label>
+                    <input asp-for="Nombre" class="input" />
+                    <span asp-validation-for="Nombre" class="has-text-danger"></span>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <label asp-for="TipoEmpleadoId" class="label">Tipo empleado</label>
+                    <div class="select">
+                        <select asp-for="TipoEmpleadoId" asp-items="ViewBag.TipoEmpleadoId">
+                            <option value="" selected>Sin definir</option>
+
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="field mt-5">
+                <input type="submit" value="Añadir" class="button" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Regresar a la lista</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

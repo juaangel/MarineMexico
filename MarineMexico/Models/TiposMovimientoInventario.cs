@@ -5,6 +5,10 @@ namespace MarineMexico.Models;
 
 public partial class TiposMovimientoInventario
 {
+    public const int
+        ENTRADA = 1,
+        SALIDA = 2;
+
     public int Id { get; set; }
 
     public string Descripcion { get; set; } = null!;

@@ -1,0 +1,55 @@
+﻿@model IEnumerable<MarineMexico.Models.Articulo>
+
+@{
+    ViewData["Title"] = "Artículos";
+}
+
+<h1 class="title has-text-weight-normal">@ViewData["Title"]</h1>
+
+<div class="buttons mb-3">
+    <a class="button" asp-action="Create" asp-controller="Articulos">
+        <span class="icon mr-1">
+            <i class="fa-solid fa-plus"></i>
+        </span>
+        Agregar
+    </a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                Tipo Empleado
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @if (item.TipoEmpleado != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.TipoEmpleado.Tipo)
+                    }
+                    else
+                    {
+                        <span>No especificado</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
